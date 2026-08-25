@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../providers/aerosync_state_provider.dart';
 import '../theme/aerosync_theme.dart';
 
@@ -19,7 +20,11 @@ class HardwareSettingsPanel extends StatelessWidget {
           // Header
           Row(
             children: [
-              const Icon(Icons.settings_remote, size: 24, color: AeroSyncTheme.primaryTeal),
+              const Icon(
+                Icons.settings_remote,
+                size: 24,
+                color: AeroSyncTheme.primaryTeal,
+              ),
               const SizedBox(width: 12),
               const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,7 +53,11 @@ class HardwareSettingsPanel extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: () {
                   final jsonStr = state.exportPresetJson();
-                  _showJsonDialog(context, 'Exported JSON Timeline Preset', jsonStr);
+                  _showJsonDialog(
+                    context,
+                    'Exported JSON Timeline Preset',
+                    jsonStr,
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AeroSyncTheme.panelBackground,
@@ -56,7 +65,10 @@ class HardwareSettingsPanel extends StatelessWidget {
                   side: const BorderSide(color: AeroSyncTheme.borderColor),
                 ),
                 icon: const Icon(Icons.code, size: 16),
-                label: const Text('Export JSON', style: TextStyle(fontWeight: FontWeight.bold)),
+                label: const Text(
+                  'Export JSON',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
               const SizedBox(width: 12),
               ElevatedButton.icon(
@@ -68,7 +80,10 @@ class HardwareSettingsPanel extends StatelessWidget {
                   foregroundColor: AeroSyncTheme.darkBackground,
                 ),
                 icon: const Icon(Icons.file_upload_outlined, size: 16),
-                label: const Text('Import JSON', style: TextStyle(fontWeight: FontWeight.bold)),
+                label: const Text(
+                  'Import JSON',
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
               ),
             ],
           ),
@@ -91,7 +106,11 @@ class HardwareSettingsPanel extends StatelessWidget {
                     children: [
                       const Row(
                         children: [
-                          Icon(Icons.wifi, size: 18, color: AeroSyncTheme.primaryTeal),
+                          Icon(
+                            Icons.wifi,
+                            size: 18,
+                            color: AeroSyncTheme.primaryTeal,
+                          ),
                           SizedBox(width: 8),
                           Text(
                             'UNITY VR WIFI LISTENER',
@@ -106,10 +125,22 @@ class HardwareSettingsPanel extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 12),
-                      _buildInfoRow('UDP Listening Port', '${state.unityListener.port}'),
-                      _buildInfoRow('Listener Status', state.unityListener.isListening ? 'ACTIVE (Listening...)' : 'STOPPED'),
+                      _buildInfoRow(
+                        'UDP Listening Port',
+                        '${state.unityListener.port}',
+                      ),
+                      _buildInfoRow(
+                        'Listener Status',
+                        state.unityListener.isListening
+                            ? 'ACTIVE (Listening...)'
+                            : 'STOPPED',
+                      ),
                       _buildInfoRow('Trigger Event', 'GAME_START / START'),
-                      _buildInfoRow('Last Received', state.unityListener.lastSenderIp ?? 'Waiting for Unity VR...'),
+                      _buildInfoRow(
+                        'Last Received',
+                        state.unityListener.lastSenderIp ??
+                            'Waiting for Unity VR...',
+                      ),
                     ],
                   ),
                 ),
@@ -129,7 +160,11 @@ class HardwareSettingsPanel extends StatelessWidget {
                     children: [
                       const Row(
                         children: [
-                          Icon(Icons.memory, size: 18, color: AeroSyncTheme.fan1Orange),
+                          Icon(
+                            Icons.memory,
+                            size: 18,
+                            color: AeroSyncTheme.fan1Orange,
+                          ),
                           SizedBox(width: 8),
                           Text(
                             'ESP-32 / ESP-01 SERIAL UART',
@@ -144,10 +179,22 @@ class HardwareSettingsPanel extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 12),
-                      _buildInfoRow('COM Port', state.hardwareDispatcher.comPort),
-                      _buildInfoRow('Baud Rate', '${state.hardwareDispatcher.baudRate} 8-N-1'),
-                      _buildInfoRow('Relay Protocol', 'F1:<0|1|2>,F2:<0|1|2>,F3:<0|1|2>\\n'),
-                      _buildInfoRow('Active Relay Dispatch', 'F1:${state.f1State.label}, F2:${state.f2State.label}, F3:${state.f3State.label}'),
+                      _buildInfoRow(
+                        'COM Port',
+                        state.hardwareDispatcher.comPort,
+                      ),
+                      _buildInfoRow(
+                        'Baud Rate',
+                        '${state.hardwareDispatcher.baudRate} 8-N-1',
+                      ),
+                      _buildInfoRow(
+                        'Relay Protocol',
+                        'F1:<0|1|2>,F2:<0|1|2>,F3:<0|1|2>\\n',
+                      ),
+                      _buildInfoRow(
+                        'Active Relay Dispatch',
+                        'F1:${state.f1State.label}, F2:${state.f2State.label}, F3:${state.f3State.label}',
+                      ),
                     ],
                   ),
                 ),
@@ -232,7 +279,10 @@ class HardwareSettingsPanel extends StatelessWidget {
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AeroSyncTheme.panelBackground,
-        title: Text(title, style: const TextStyle(color: AeroSyncTheme.textMain, fontSize: 16)),
+        title: Text(
+          title,
+          style: const TextStyle(color: AeroSyncTheme.textMain, fontSize: 16),
+        ),
         content: SizedBox(
           width: 500,
           height: 350,
@@ -250,27 +300,40 @@ class HardwareSettingsPanel extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Close', style: TextStyle(color: AeroSyncTheme.primaryTeal)),
+            child: const Text(
+              'Close',
+              style: TextStyle(color: AeroSyncTheme.primaryTeal),
+            ),
           ),
         ],
       ),
     );
   }
 
-  void _showImportJsonDialog(BuildContext context, AeroSyncStateProvider state) {
+  void _showImportJsonDialog(
+    BuildContext context,
+    AeroSyncStateProvider state,
+  ) {
     final controller = TextEditingController();
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
         backgroundColor: AeroSyncTheme.panelBackground,
-        title: const Text('Import JSON Timeline Preset', style: TextStyle(color: AeroSyncTheme.textMain, fontSize: 16)),
+        title: const Text(
+          'Import JSON Timeline Preset',
+          style: TextStyle(color: AeroSyncTheme.textMain, fontSize: 16),
+        ),
         content: SizedBox(
           width: 500,
           height: 250,
           child: TextField(
             controller: controller,
             maxLines: 10,
-            style: const TextStyle(color: AeroSyncTheme.primaryTeal, fontFamily: AeroSyncTheme.fontTechnical, fontSize: 12),
+            style: const TextStyle(
+              color: AeroSyncTheme.primaryTeal,
+              fontFamily: AeroSyncTheme.fontTechnical,
+              fontSize: 12,
+            ),
             decoration: const InputDecoration(
               hintText: 'Paste JSON timeline string here...',
               hintStyle: TextStyle(color: AeroSyncTheme.textDim),
@@ -281,7 +344,10 @@ class HardwareSettingsPanel extends StatelessWidget {
         actions: [
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel', style: TextStyle(color: AeroSyncTheme.textMuted)),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: AeroSyncTheme.textMuted),
+            ),
           ),
           ElevatedButton(
             onPressed: () {
@@ -290,13 +356,22 @@ class HardwareSettingsPanel extends StatelessWidget {
                 Navigator.of(context).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text(success ? 'Preset JSON imported successfully!' : 'Invalid JSON preset format!'),
-                    backgroundColor: success ? AeroSyncTheme.primaryTeal : AeroSyncTheme.liveRed,
+                    content: Text(
+                      success
+                          ? 'Preset JSON imported successfully!'
+                          : 'Invalid JSON preset format!',
+                    ),
+                    backgroundColor: success
+                        ? AeroSyncTheme.primaryTeal
+                        : AeroSyncTheme.liveRed,
                   ),
                 );
               }
             },
-            style: ElevatedButton.styleFrom(backgroundColor: AeroSyncTheme.primaryTeal, foregroundColor: AeroSyncTheme.darkBackground),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AeroSyncTheme.primaryTeal,
+              foregroundColor: AeroSyncTheme.darkBackground,
+            ),
             child: const Text('Import'),
           ),
         ],
