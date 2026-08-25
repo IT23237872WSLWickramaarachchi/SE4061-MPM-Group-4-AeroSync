@@ -43,12 +43,11 @@ class HardwareSerialDispatcher {
     bool bytesWritten = false;
     if (Platform.isWindows) {
       try {
-        final devicePath = '\\\\.\\$cleanPort';
-        final file = File(devicePath);
-        final raf = file.openSync(mode: FileMode.writeOnly);
-        raf.writeStringSync(payload);
-        raf.flushSync();
-        raf.closeSync();
+        Process.run('cmd.exe', ['/c', 'echo ${payload.trim()} > \\\\.\\$cleanPort']).then((result) {
+          if (kDebugMode && result.exitCode != 0) {
+            debugPrint('Serial Port TX Output ($cleanPort): ${result.stderr}');
+          }
+        });
         bytesWritten = true;
       } catch (e) {
         if (kDebugMode) {
