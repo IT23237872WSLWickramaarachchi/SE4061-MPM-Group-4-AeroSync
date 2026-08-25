@@ -179,9 +179,47 @@ class HardwareSettingsPanel extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 12),
-                      _buildInfoRow(
-                        'COM Port',
-                        state.hardwareDispatcher.comPort,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'COM Port',
+                              style: TextStyle(
+                                color: AeroSyncTheme.textMuted,
+                                fontSize: 12,
+                                fontFamily: AeroSyncTheme.fontHeadline,
+                              ),
+                            ),
+                            DropdownButton<String>(
+                              value: ['COM1', 'COM2', 'COM3', 'COM4', 'COM5', 'COM6', 'COM7', 'COM8']
+                                      .contains(state.hardwareDispatcher.comPort)
+                                  ? state.hardwareDispatcher.comPort
+                                  : 'COM4',
+                              dropdownColor: AeroSyncTheme.panelBackground,
+                              style: const TextStyle(
+                                color: AeroSyncTheme.primaryTeal,
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: AeroSyncTheme.fontTechnical,
+                              ),
+                              isDense: true,
+                              underline: const SizedBox(),
+                              items: ['COM1', 'COM2', 'COM3', 'COM4', 'COM5', 'COM6', 'COM7', 'COM8']
+                                  .map((port) => DropdownMenuItem(
+                                        value: port,
+                                        child: Text(port),
+                                      ))
+                                  .toList(),
+                              onChanged: (val) {
+                                if (val != null) {
+                                  state.setComPort(val);
+                                }
+                              },
+                            ),
+                          ],
+                        ),
                       ),
                       _buildInfoRow(
                         'Baud Rate',

@@ -11,7 +11,7 @@ try:
 except Exception:
     wmi_obj = None
 
-COM_PORT = 'COM6' 
+COM_PORT = 'COM4' 
 BAUD_RATE = 115200
 
 # Connect Serial

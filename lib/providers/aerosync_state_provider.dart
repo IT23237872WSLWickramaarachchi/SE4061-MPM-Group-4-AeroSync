@@ -46,6 +46,11 @@ class AeroSyncStateProvider extends ChangeNotifier {
   // ESP-32 / ESP-01 Serial UART Relay Hardware Dispatcher Service
   final HardwareSerialDispatcher hardwareDispatcher = HardwareSerialDispatcher();
 
+  void setComPort(String newPort) {
+    hardwareDispatcher.comPort = newPort;
+    notifyListeners();
+  }
+
   // Manual Slider Override Mode
   bool _isManualSliderMode = true;
   bool get isManualSliderMode => _isManualSliderMode;
