@@ -8,7 +8,7 @@ class UnityNetworkListener {
   RawDatagramSocket? _socket;
   bool isListening = false;
 
-  final void Function(String rawPacket, String senderIp) onGameStartTriggered;
+  final void Function(String rawPacket, String senderIp, String projectId) onGameStartTriggered;
 
   DateTime? lastTriggerTime;
   String? lastSenderIp;
@@ -35,13 +35,31 @@ class UnityNetworkListener {
               print('Unity Network Listener Received Packet from $sender: $message');
             }
 
-            // Check for trigger signals: "GAME_START", "START", or JSON packet
-            if (message.toUpperCase().contains('GAME_START') ||
-                message.toUpperCase().contains('START') ||
-                message.contains('scene')) {
+            String projectId = '';
+            bool isStartTrigger = false;
+
+            try {
+              // Attempt to parse JSON (from new bridge)
+              final Map<String, dynamic> jsonPayload = jsonDecode(message);
+              if (jsonPayload.containsKey('action') && jsonPayload['action'] == 'GAME_START') {
+                isStartTrigger = true;
+                if (jsonPayload.containsKey('projectId')) {
+                  projectId = jsonPayload['projectId'].toString();
+                }
+              }
+            } catch (e) {
+              // Fallback for old simple text messages
+              if (message.toUpperCase().contains('GAME_START') ||
+                  message.toUpperCase().contains('START') ||
+                  message.contains('scene')) {
+                isStartTrigger = true;
+              }
+            }
+
+            if (isStartTrigger) {
               lastTriggerTime = DateTime.now();
               lastSenderIp = sender;
-              onGameStartTriggered(message, sender);
+              onGameStartTriggered(message, sender, projectId);
             }
           }
         }

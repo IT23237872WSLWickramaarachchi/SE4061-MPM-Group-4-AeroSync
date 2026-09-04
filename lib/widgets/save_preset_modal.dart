@@ -12,17 +12,20 @@ class SavePresetModal extends StatefulWidget {
 
 class _SavePresetModalState extends State<SavePresetModal> {
   late TextEditingController _nameController;
+  late TextEditingController _gameIdController;
 
   @override
   void initState() {
     super.initState();
     final state = context.read<AeroSyncStateProvider>();
     _nameController = TextEditingController(text: state.presetSaveName);
+    _gameIdController = TextEditingController();
   }
 
   @override
   void dispose() {
     _nameController.dispose();
+    _gameIdController.dispose();
     super.dispose();
   }
 
@@ -124,6 +127,40 @@ class _SavePresetModalState extends State<SavePresetModal> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 16),
+                const Text(
+                  'Linked Game ID (Optional)',
+                  style: TextStyle(
+                    color: AeroSyncTheme.textMuted,
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    fontFamily: AeroSyncTheme.fontHeadline,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Container(
+                  height: 42,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF10151C),
+                    borderRadius: BorderRadius.circular(4),
+                    border: Border.all(color: AeroSyncTheme.borderColor),
+                  ),
+                  child: TextField(
+                    controller: _gameIdController,
+                    style: const TextStyle(
+                      color: AeroSyncTheme.textMain,
+                      fontSize: 13,
+                      fontFamily: AeroSyncTheme.fontTechnical,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    decoration: const InputDecoration(
+                      hintText: 'e.g., EagleFlight01',
+                      hintStyle: TextStyle(color: Colors.white24),
+                      border: InputBorder.none,
+                      contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    ),
+                  ),
+                ),
                 const SizedBox(height: 24),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -142,7 +179,10 @@ class _SavePresetModalState extends State<SavePresetModal> {
                     ElevatedButton.icon(
                       onPressed: () {
                         if (_nameController.text.isNotEmpty) {
-                          state.saveCurrentPreset(_nameController.text.trim());
+                          state.saveCurrentPreset(
+                            _nameController.text.trim(),
+                            linkedGameId: _gameIdController.text.trim(),
+                          );
                         }
                       },
                       style: ElevatedButton.styleFrom(

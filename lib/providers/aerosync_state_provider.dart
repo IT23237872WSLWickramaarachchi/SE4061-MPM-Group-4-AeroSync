@@ -224,10 +224,23 @@ class AeroSyncStateProvider extends ChangeNotifier {
   void _initServices() {
     unityListener = UnityNetworkListener(
       port: 8052,
-      onGameStartTriggered: (rawPacket, senderIp) {
+      onGameStartTriggered: (rawPacket, senderIp, projectId) {
+        if (projectId.isNotEmpty) {
+          final matchingPresetIndex = presets.indexWhere((p) => p.linkedGameId == projectId);
+          if (matchingPresetIndex != -1) {
+            selectPreset(presets[matchingPresetIndex].id);
+          } else {
+            // Ignore the trigger because it doesn't match any of our presets' linkedGameId
+            if (kDebugMode) {
+              print('Ignored trigger from unknown projectId: $projectId');
+            }
+            return;
+          }
+        }
+        
         isUnityTriggerReceived = true;
         _currentTime = 0.0;
-        _isManualSliderMode = false; // Timeline automation takes over on VR Game Start
+        _isManualSliderMode = false;
         _isPlaying = true;
         notifyListeners();
       },
@@ -390,7 +403,7 @@ class AeroSyncStateProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void saveCurrentPreset(String name) {
+  void saveCurrentPreset(String name, {String linkedGameId = ''}) {
     currentPresetName = name;
     final newPreset = WindPreset(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -400,6 +413,7 @@ class AeroSyncStateProvider extends ChangeNotifier {
       defaultF1: f1Intensity,
       defaultF2: f2Intensity,
       defaultF3: f3Intensity,
+      linkedGameId: linkedGameId,
     );
     presets = presets.map((p) => p.copyWith(isSelected: false)).toList();
     presets.insert(0, newPreset);

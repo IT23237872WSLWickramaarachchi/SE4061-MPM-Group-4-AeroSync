@@ -7,6 +7,7 @@ class WindPreset {
   final double defaultF2;
   final double defaultF3;
   final String description;
+  final String linkedGameId;
 
   const WindPreset({
     required this.id,
@@ -17,6 +18,7 @@ class WindPreset {
     this.defaultF2 = 0.5,
     this.defaultF3 = 0.5,
     this.description = 'Physical wind simulation preset configuration.',
+    this.linkedGameId = '',
   });
 
   WindPreset copyWith({
@@ -28,6 +30,7 @@ class WindPreset {
     double? defaultF2,
     double? defaultF3,
     String? description,
+    String? linkedGameId,
   }) {
     return WindPreset(
       id: id ?? this.id,
@@ -38,6 +41,7 @@ class WindPreset {
       defaultF2: defaultF2 ?? this.defaultF2,
       defaultF3: defaultF3 ?? this.defaultF3,
       description: description ?? this.description,
+      linkedGameId: linkedGameId ?? this.linkedGameId,
     );
   }
 }
